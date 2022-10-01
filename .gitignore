@@ -1,0 +1,14 @@
+*.asv
+*.m~
+*.DS_Store
+*.log
+*.log*
+/.vscode/
+/.idea/
+/src/__pycache__/
+/example/__pycache__/
+/test/__pycache__/
+*.exe
+*.mexa64
+/code_gen/
+/build/
