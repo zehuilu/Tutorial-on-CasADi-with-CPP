@@ -32,6 +32,9 @@ if(NOT WIN32)
   set(BoldWhite   "${Esc}[1;37m")
 endif()
 
+SET(CMAKE_EXE_LINKER_FLAGS 
+    "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,${CMAKE_SOURCE_DIR}/build")
+
 # for using casadi
 find_package(casadi REQUIRED)
 # For multi threading
@@ -74,9 +77,6 @@ if(CASADI_LIBRARY)
     set(CASADI_LIBRARIES ${CASADI_LIBRARIES} ${CASADI_LIBRARY})
 endif()
 
-SET(CMAKE_EXE_LINKER_FLAGS 
-    "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,${CMAKE_SOURCE_DIR}/build")
-
 # find the following packages
 find_package(Threads REQUIRED)
 
@@ -110,11 +110,14 @@ add_executable(example_code_gen example/example_code_gen.cpp)
 target_link_libraries(example_code_gen ${CASADI_LIBRARIES})
 
 # a test file to use auto generated code library
-if(EXISTS "${CMAKE_SOURCE_DIR}/build/lib_example.so")
-    message("${Green}/build/lib_example.so exists. Already compiled the files associated with it.${ColourReset}")    
-    # compile the test file
-    add_executable(example_use_code_gen example/example_use_code_gen.cpp)
-    target_link_libraries(example_use_code_gen ${CASADI_LIBRARIES})
-else()
-    message("${Yellow}/build/lib_example.so does not exist. No file associated with it is compiled. After this file is auto generated, you need to ru-run cmake to compile.${ColourReset}")
-endif()
+# compile the test file
+add_executable(example_use_code_gen example/example_use_code_gen.cpp)
+target_link_libraries(example_use_code_gen ${CASADI_LIBRARIES})
+
+# compile a nonlinear programming to a shared library
+add_executable(example_nlp_code_gen example/example_nlp_code_gen.cpp)
+target_link_libraries(example_nlp_code_gen ${CASADI_LIBRARIES})
+
+# solve a NLP given a compiled shared library
+add_executable(example_use_nlp_external example/example_use_nlp_external.cpp)
+target_link_libraries(example_use_nlp_external ${CASADI_LIBRARIES})

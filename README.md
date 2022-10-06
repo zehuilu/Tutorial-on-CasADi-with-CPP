@@ -59,7 +59,7 @@ $ git clone https://github.com/casadi/casadi.git -b master casadi
 $ cd casadi
 $ mkdir build
 $ cd build
-$ cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON ..
+$ cmake -DWITH_PYTHON=ON -DWITH_IPOPT=ON -DWITH_OPENMP=ON -DWITH_THREAD=ON ..
 $ make
 $ sudo make install
 ```
@@ -70,7 +70,7 @@ To build this repo,
 $ cd
 $ git clone https://github.com/zehuilu/Tutorial-on-CasADi-with-CPP.git
 $ cd <MAIN_DIRECTORY>
-$ mkdir code_gen
+$ mkdir build code_gen
 $ cd build
 $ cmake ..
 $ make
@@ -97,18 +97,27 @@ $ ./example_basic_operations
 
 3. See how to automatically generate functions in C code, and how to use them in another C++ file.
 
-First, compile a file to generate C code automatically, and run it to compile these C codes as a shared library.
 ```
 $ cd <MAIN_DIRECTORY>/build
-$ ./example_code_gen
-```
-
-Secondly, re-run the cmake command to compile another C++ file to use the aforementioned shared library.
-```
-$ cmake ..
-$ make
 $ ./example_use_code_gen
 ```
+
+
+4. To solve a Model Predictive Control (MPC) problem or an Cptimal Control problem at run-time, the initial condition changes at each time instance. The most proper way to solve it with CasADi is shown below. Basically, we first formulate a nonlinear programing with some parameters. In this case, the initial condition can be the parameters. Then compile this problem as a shared library. At run-time, revise the parameter value and re-solve it.
+
+First, compile the nonlinear programming
+```
+$ cd <MAIN_DIRECTORY>/build
+$ ./example_nlp_code_gen
+```
+
+Second, run a solver instance with external shared library
+```
+$ cd <MAIN_DIRECTORY>/build
+$ ./example_use_nlp_external
+```
+
+To add parameter into a nonlinear programming, and revise the value at run-time, I will add another example later. Oct. 06, 2022
 
 
 If you want to know how to evoke other operations or functions via CasADi in C++, feel free to post your questions/requests in Issues or Discussions.
