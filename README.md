@@ -55,7 +55,7 @@ To build casadi from source, see instructions [here](https://github.com/casadi/c
 $ sudo apt install gfortran liblapack-dev pkg-config --install-recommends
 $ sudo apt install swig
 $ cd
-$ git clone https://github.com/casadi/casadi.git -b master casadi
+$ git clone https://github.com/casadi/casadi.git -b main casadi
 $ cd casadi
 $ mkdir build
 $ cd build
